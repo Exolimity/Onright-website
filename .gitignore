@@ -1,0 +1,25 @@
+# Node
+node_modules/
+dist/
+.vite/
+*.local
+
+# .NET
+bin/
+obj/
+*.user
+
+# App data (contact submissions written at runtime)
+backend/OnrightDigital.Api/App_Data/
+
+# Editors / OS
+.vs/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
