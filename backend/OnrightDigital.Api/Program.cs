@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Diagnostics;
 using OnrightDigital.Api.Endpoints;
 using OnrightDigital.Api.Services;
 
@@ -33,8 +34,20 @@ var app = builder.Build();
 
 app.UseExceptionHandler(errorApp =>
     errorApp.Run(context =>
-        Results.Problem("An unexpected error occurred. Please try again.")
-            .ExecuteAsync(context)));
+    {
+        var error = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+        // Malformed request bodies surface as BadHttpRequestException carrying a 4xx
+        // status. That is the client's mistake, so report it as such rather than a 500.
+        var result = error is BadHttpRequestException badRequest
+            ? Results.Problem(
+                title: "The request could not be read.",
+                detail: "Check that the body is valid JSON.",
+                statusCode: badRequest.StatusCode)
+            : Results.Problem("An unexpected error occurred. Please try again.");
+
+        return result.ExecuteAsync(context);
+    }));
 
 if (app.Environment.IsDevelopment())
 {

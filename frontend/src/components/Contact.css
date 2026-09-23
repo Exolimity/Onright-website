@@ -45,6 +45,8 @@
 .field {
   display: grid;
   gap: var(--space-2);
+  /* Keep inputs top-aligned when a neighbouring field grows an error line. */
+  align-content: start;
 }
 
 .field label {
@@ -111,7 +113,13 @@
   color: var(--color-text);
 }
 
+.contact__success strong {
+  white-space: nowrap;
+}
+
 .contact__success > svg {
+  /* Padding adds to the icon's size instead of eating into it. */
+  box-sizing: content-box;
   padding: var(--space-2);
   border-radius: 50%;
   background-color: var(--color-success-soft);

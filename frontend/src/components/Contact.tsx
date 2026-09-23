@@ -82,7 +82,15 @@ export function Contact() {
           if (messages.length > 0) fieldErrors[key.toLowerCase()] = messages[0]
         }
         setErrors(fieldErrors)
-        setStatus({ kind: 'error', message: error.message })
+        setStatus({
+          kind: 'error',
+          // When the server flagged specific fields, point at them instead of
+          // repeating its generic title.
+          message:
+            Object.keys(fieldErrors).length > 0
+              ? 'Please fix the highlighted fields and try again.'
+              : error.message,
+        })
       } else {
         setStatus({
           kind: 'error',
@@ -146,6 +154,7 @@ export function Contact() {
                     name="name"
                     value={form.name}
                     onChange={update('name')}
+                    maxLength={80}
                     aria-invalid={Boolean(errors.name)}
                     aria-describedby={errors.name ? 'name-error' : undefined}
                     autoComplete="name"
@@ -165,6 +174,7 @@ export function Contact() {
                     type="email"
                     value={form.email}
                     onChange={update('email')}
+                    maxLength={160}
                     aria-invalid={Boolean(errors.email)}
                     aria-describedby={errors.email ? 'email-error' : undefined}
                     autoComplete="email"
@@ -185,6 +195,7 @@ export function Contact() {
                     name="company"
                     value={form.company}
                     onChange={update('company')}
+                    maxLength={120}
                     autoComplete="organization"
                   />
                 </div>
@@ -209,6 +220,7 @@ export function Contact() {
                   rows={5}
                   value={form.message}
                   onChange={update('message')}
+                  maxLength={4000}
                   aria-invalid={Boolean(errors.message)}
                   aria-describedby={errors.message ? 'message-error' : undefined}
                 />
