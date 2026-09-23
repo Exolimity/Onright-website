@@ -1,9 +1,4 @@
-import type {
-  ApiErrorBody,
-  ContactRequestDto,
-  ContactResponseDto,
-  ServiceDto,
-} from '../types/api'
+import type { ApiErrorBody, ContactRequestDto, ContactResponseDto } from '../types/api'
 
 /**
  * In development this is empty and Vite proxies /api to the C# backend
@@ -11,16 +6,16 @@ import type {
  */
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
 
-/** Thrown for any non-2xx response, carrying field errors when the API sends them. */
+/** Thrown for any non-2xx response. `fields` lists the form fields the server rejected. */
 export class ApiError extends Error {
   readonly status: number
-  readonly fieldErrors: Record<string, string[]>
+  readonly fields: string[]
 
-  constructor(message: string, status: number, fieldErrors: Record<string, string[]> = {}) {
+  constructor(message: string, status: number, fields: string[] = []) {
     super(message)
     this.name = 'ApiError'
     this.status = status
-    this.fieldErrors = fieldErrors
+    this.fields = fields
   }
 }
 
@@ -35,24 +30,14 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     try {
       body = (await response.json()) as ApiErrorBody
     } catch {
-      // Response had no JSON body — fall through to the generic message.
+      // No JSON body — the status code alone will have to do.
     }
-    throw new ApiError(
-      body.detail ?? body.title ?? `Request failed (${response.status})`,
-      response.status,
-      body.errors ?? {},
-    )
-  }
-
-  if (response.status === 204) {
-    return undefined as T
+    // The server keys errors by C# property name ("Email"); the form uses "email".
+    const fields = Object.keys(body.errors ?? {}).map((key) => key.toLowerCase())
+    throw new ApiError(body.detail ?? body.title ?? `HTTP ${response.status}`, response.status, fields)
   }
 
   return (await response.json()) as T
-}
-
-export function fetchServices(signal?: AbortSignal): Promise<ServiceDto[]> {
-  return request<ServiceDto[]>('/api/services', { signal })
 }
 
 export function submitContact(payload: ContactRequestDto): Promise<ContactResponseDto> {

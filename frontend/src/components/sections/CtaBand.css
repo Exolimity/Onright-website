@@ -1,0 +1,23 @@
+.cta-band {
+  padding-block: clamp(var(--space-8), 9vw, var(--space-9));
+  background-color: var(--color-invert-bg);
+  color: var(--color-invert-text);
+}
+
+.cta-band__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.cta-band__title {
+  max-width: 18ch;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+}
+
+.cta-band__body {
+  margin-top: var(--space-4);
+  color: var(--color-invert-muted);
+}

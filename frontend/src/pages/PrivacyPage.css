@@ -1,0 +1,15 @@
+.privacy {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.privacy__section {
+  display: grid;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+}
+
+.privacy__heading {
+  font-size: var(--font-size-2xl);
+  color: var(--color-text);
+}

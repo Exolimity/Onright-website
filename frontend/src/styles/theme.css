@@ -1,52 +1,58 @@
 /* ============================================================
    Onright Digital — design tokens
    ------------------------------------------------------------
-   This is the ONLY file you need to touch to restyle the site.
-   Change the accent colours, radii, or fonts here and every
-   component follows. Nothing below this file hard-codes a colour.
+   Minimal & elegant: black and white on warm off-white, serif
+   headings, clean sans-serif body. This is the ONLY file you
+   need to touch to restyle the site.
+
+   When the logo is finished: set --color-accent (and its hover)
+   to the logo colour and the buttons, links and highlights follow.
    ============================================================ */
 
 :root {
-  /* ---- Brand colours ---------------------------------------- */
-  --color-accent: #1d4ed8;
-  --color-accent-hover: #1e40af;
-  --color-accent-soft: #e8efff;
-  --color-accent-contrast: #ffffff;
-  --color-accent-2: #0ea5e9;
+  /* ---- Brand ------------------------------------------------ */
+  --color-accent: #161514;
+  --color-accent-hover: #3a3835;
+  --color-accent-contrast: #faf8f5;
 
   /* ---- Surfaces & text -------------------------------------- */
-  --color-bg: #ffffff;
-  --color-bg-alt: #f6f8fc;
-  --color-surface: #ffffff;
-  --color-surface-invert: #0b1220;
-  --color-text: #101828;
-  --color-text-muted: #5b6678;
-  --color-text-invert: #f8fafc;
-  --color-text-invert-muted: #a8b3c7;
-  --color-border: #e4e8f0;
-  --color-border-strong: #cfd6e4;
+  --color-bg: #faf8f5;          /* warm off-white page */
+  --color-bg-alt: #f3f0ea;      /* slightly deeper band */
+  --color-surface: #fdfcfa;     /* cards, inputs */
+  --color-text: #161514;
+  --color-text-muted: #5f5b55;
+  --color-border: #e4dfd6;
+  --color-border-strong: #c9c2b6;
 
-  /* ---- Feedback --------------------------------------------- */
-  --color-success: #0f7b47;
-  --color-success-soft: #e6f6ee;
-  --color-error: #b42318;
-  --color-error-soft: #fdeceb;
+  /* Inverted band (closing call-to-action) */
+  --color-invert-bg: #161514;
+  --color-invert-text: #faf8f5;
+  --color-invert-muted: #a8a39a;
+  --color-invert-border: #34322f;
+
+  /* ---- Feedback (kept muted to suit the palette) ------------ */
+  --color-error: #9f3a28;
+  --color-error-soft: #f6e9e5;
+  --color-success: #2f6b4f;
+  --color-success-soft: #e7f0ea;
 
   /* ---- Typography ------------------------------------------- */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-sans: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+
   --font-size-xs: 0.8125rem;
   --font-size-sm: 0.9375rem;
   --font-size-base: 1.0625rem;
-  --font-size-lg: 1.25rem;
+  --font-size-lg: 1.1875rem;
   --font-size-xl: 1.5rem;
   --font-size-2xl: 2rem;
-  --font-size-3xl: 2.75rem;
-  --font-size-4xl: 3.5rem;
-  --line-tight: 1.15;
-  --line-normal: 1.65;
+  --font-size-3xl: clamp(2.25rem, 4.5vw, 3.25rem);
+  --font-size-display: clamp(3rem, 8vw, 6rem);
+  --line-tight: 1.08;
+  --line-normal: 1.7;
 
-  /* ---- Spacing scale ---------------------------------------- */
+  /* ---- Spacing ---------------------------------------------- */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -54,81 +60,20 @@
   --space-5: 1.5rem;
   --space-6: 2rem;
   --space-7: 3rem;
-  --space-8: 4rem;
-  --space-9: 6rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
 
-  /* ---- Shape & depth ---------------------------------------- */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  /* ---- Shape ------------------------------------------------ */
+  --radius-sm: 6px;
+  --radius-md: 10px;
   --radius-pill: 999px;
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
-  --shadow-md: 0 8px 24px rgba(16, 24, 40, 0.08);
-  --shadow-lg: 0 20px 48px rgba(16, 24, 40, 0.12);
 
   /* ---- Layout ----------------------------------------------- */
-  --container-max: 1140px;
-  --header-height: 72px;
+  --container-max: 1160px;
+  --container-narrow: 760px;
+  --header-height: 76px;
 
-  /* ---- Motion ------------------------------------------------ */
-  --transition-fast: 140ms ease;
-  --transition-base: 240ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Dark mode: follows the OS setting, and can be forced with
-   <html data-theme="dark"> if you add a toggle later. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --color-accent: #6b9bff;
-    --color-accent-hover: #8fb4ff;
-    --color-accent-soft: #16233d;
-    --color-accent-contrast: #0b1220;
-    --color-accent-2: #38bdf8;
-
-    --color-bg: #0b1220;
-    --color-bg-alt: #101a2e;
-    --color-surface: #131d33;
-    --color-surface-invert: #060b16;
-    --color-text: #eef2f9;
-    --color-text-muted: #9fadc4;
-    --color-text-invert: #f8fafc;
-    --color-text-invert-muted: #a8b3c7;
-    --color-border: #22304c;
-    --color-border-strong: #33405e;
-
-    --color-success: #5fd39b;
-    --color-success-soft: #10291f;
-    --color-error: #ff8a80;
-    --color-error-soft: #2b1615;
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-    --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.55);
-  }
-}
-
-:root[data-theme='dark'] {
-  --color-accent: #6b9bff;
-  --color-accent-hover: #8fb4ff;
-  --color-accent-soft: #16233d;
-  --color-accent-contrast: #0b1220;
-  --color-accent-2: #38bdf8;
-
-  --color-bg: #0b1220;
-  --color-bg-alt: #101a2e;
-  --color-surface: #131d33;
-  --color-surface-invert: #060b16;
-  --color-text: #eef2f9;
-  --color-text-muted: #9fadc4;
-  --color-border: #22304c;
-  --color-border-strong: #33405e;
-
-  --color-success: #5fd39b;
-  --color-success-soft: #10291f;
-  --color-error: #ff8a80;
-  --color-error-soft: #2b1615;
-
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.55);
+  /* ---- Motion ----------------------------------------------- */
+  --transition-fast: 150ms ease;
+  --transition-base: 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }

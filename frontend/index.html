@@ -1,31 +1,33 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Onright Digital — Websites &amp; Apps, Built Right</title>
-    <meta
-      name="description"
-      content="Onright Digital designs and builds fast, reliable websites, web apps and mobile apps for growing businesses."
-    />
-    <meta name="theme-color" content="#0b1220" />
-
-    <!-- Open Graph / social sharing -->
+    <!-- Per-page <title> and description are set by the <Seo> component. -->
+    <title>Onright Digital — Websites voor ondernemers in Noord-Limburg</title>
+    <meta name="theme-color" content="#faf8f5" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Onright Digital — Websites &amp; Apps, Built Right" />
-    <meta
-      property="og:description"
-      content="We design and build fast, reliable websites, web apps and mobile apps for growing businesses."
-    />
     <meta property="og:site_name" content="Onright Digital" />
-
+    <meta property="og:locale" content="nl_NL" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+
+    <!-- Tells Google what kind of business this is and where it works (local search). -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Onright Digital",
+        "description": "Webstudio uit Belfeld die websites maakt voor ondernemers in Noord-Limburg.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Belfeld",
+          "addressRegion": "Limburg",
+          "addressCountry": "NL"
+        },
+        "areaServed": ["Belfeld", "Venlo", "Tegelen", "Blerick", "Reuver", "Beesel", "Kessel", "Noord-Limburg"],
+        "knowsLanguage": "nl"
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -8,18 +8,26 @@ public sealed class ContactMessage
     public string Name { get; init; } = string.Empty;
     public string Email { get; init; } = string.Empty;
     public string? Company { get; init; }
-    public string? Budget { get; init; }
+    public string? Phone { get; init; }
+    public string? Topic { get; init; }
     public string Message { get; init; } = string.Empty;
 
     public static ContactMessage FromRequest(ContactRequest request) => new()
     {
-        // Short, human-readable reference the client can quote back to us.
-        ReferenceId = $"OD-{DateTime.UtcNow:yyMMdd}-{Guid.NewGuid().ToString("N")[..6].ToUpperInvariant()}",
+        ReferenceId = NewReferenceId(),
         ReceivedAtUtc = DateTimeOffset.UtcNow,
         Name = request.Name.Trim(),
         Email = request.Email.Trim(),
-        Company = string.IsNullOrWhiteSpace(request.Company) ? null : request.Company.Trim(),
-        Budget = string.IsNullOrWhiteSpace(request.Budget) ? null : request.Budget.Trim(),
+        Company = Clean(request.Company),
+        Phone = Clean(request.Phone),
+        Topic = Clean(request.Topic),
         Message = request.Message.Trim(),
     };
+
+    /// <summary>Short, human-readable reference the client can quote back, e.g. OD-260923-4F1A2B.</summary>
+    public static string NewReferenceId() =>
+        $"OD-{DateTime.UtcNow:yyMMdd}-{Guid.NewGuid().ToString("N")[..6].ToUpperInvariant()}";
+
+    private static string? Clean(string? value) =>
+        string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 }

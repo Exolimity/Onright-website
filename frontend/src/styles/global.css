@@ -12,15 +12,11 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-height) + var(--space-4));
   -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-height) + var(--space-4));
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
@@ -31,12 +27,25 @@ html {
 }
 
 body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
   line-height: var(--line-normal);
   color: var(--color-text);
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+main {
+  flex: 1;
 }
 
 img,
@@ -46,12 +55,9 @@ svg {
 }
 
 a {
-  color: var(--color-accent);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--color-accent-hover);
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 
 button,
@@ -63,33 +69,42 @@ select {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background-color: var(--color-text);
+  color: var(--color-bg);
 }
 
 /* ---------- Typography ---------- */
 h1,
 h2,
-h3,
-h4 {
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
   line-height: var(--line-tight);
-  letter-spacing: -0.02em;
-  font-weight: 700;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(2.25rem, 5.5vw, var(--font-size-4xl));
-  font-weight: 800;
+  font-size: var(--font-size-display);
 }
 
 h2 {
-  font-size: clamp(1.75rem, 4vw, var(--font-size-3xl));
+  font-size: var(--font-size-3xl);
 }
 
 h3 {
   font-size: var(--font-size-xl);
+}
+
+h1 em,
+h2 em {
+  font-style: italic;
 }
 
 p {
@@ -104,39 +119,60 @@ p {
   padding-inline: var(--space-5);
 }
 
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
 .section {
-  padding-block: clamp(var(--space-7), 9vw, var(--space-9));
+  padding-block: clamp(var(--space-8), 10vw, var(--space-9));
+}
+
+.section + .section {
+  border-top: 1px solid var(--color-border);
 }
 
 .section--alt {
   background-color: var(--color-bg-alt);
-  border-block: 1px solid var(--color-border);
 }
 
-.section__head {
-  max-width: 660px;
-  margin-bottom: var(--space-7);
+.section--tight {
+  padding-block: clamp(var(--space-7), 7vw, var(--space-8));
 }
 
-.section__head--center {
-  margin-inline: auto;
-  text-align: center;
-}
-
-.section__intro {
-  margin-top: var(--space-4);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-lg);
-}
-
-.eyebrow {
-  display: inline-block;
-  margin-bottom: var(--space-3);
+/* Small uppercase label above a heading, e.g. "WERKWIJZE". */
+.label {
+  display: block;
+  margin-bottom: var(--space-4);
   font-size: var(--font-size-xs);
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-text-muted);
+}
+
+.lead {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  max-width: 60ch;
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+/* Two-column intro: label + heading on the left, text on the right. */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: var(--space-7);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .split {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
 }
 
 .skip-link {
@@ -148,12 +184,11 @@ p {
   background: var(--color-accent);
   color: var(--color-accent-contrast);
   border-radius: var(--radius-sm);
-  transition: top var(--transition-fast);
+  text-decoration: none;
 }
 
 .skip-link:focus {
   top: var(--space-4);
-  color: var(--color-accent-contrast);
 }
 
 .visually-hidden {
@@ -173,25 +208,21 @@ p {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-3) var(--space-5);
+  padding: 0.8rem 1.5rem;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
   font-size: var(--font-size-sm);
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
   cursor: pointer;
-  transition: background-color var(--transition-fast),
-    border-color var(--transition-fast), color var(--transition-fast),
-    transform var(--transition-fast);
-}
-
-.btn:hover {
-  transform: translateY(-1px);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .btn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
-  transform: none;
 }
 
 .btn--primary {
@@ -201,49 +232,45 @@ p {
 
 .btn--primary:hover:not(:disabled) {
   background-color: var(--color-accent-hover);
-  color: var(--color-accent-contrast);
 }
 
-.btn--secondary {
-  background-color: transparent;
+.btn--outline {
   border-color: var(--color-border-strong);
   color: var(--color-text);
 }
 
-.btn--secondary:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+.btn--outline:hover {
+  border-color: var(--color-text);
 }
 
-.btn--ghost-invert {
-  background-color: transparent;
-  border-color: rgba(255, 255, 255, 0.35);
-  color: var(--color-text-invert);
+.btn--invert {
+  background-color: var(--color-invert-text);
+  color: var(--color-invert-bg);
 }
 
-.btn--ghost-invert:hover {
-  background-color: rgba(255, 255, 255, 0.12);
-  color: var(--color-text-invert);
+.btn--invert:hover {
+  background-color: #ffffff;
 }
 
 .btn--lg {
-  padding: var(--space-4) var(--space-6);
+  padding: 1rem 1.75rem;
   font-size: var(--font-size-base);
 }
 
-/* ---------- Cards ---------- */
-.card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-base),
-    box-shadow var(--transition-base), border-color var(--transition-base);
+/* Understated text link with an arrow, e.g. "Alle diensten bekijken →" */
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border-strong);
+  padding-bottom: 2px;
+  transition: border-color var(--transition-fast), gap var(--transition-fast);
 }
 
-.card--interactive:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-border-strong);
+.arrow-link:hover {
+  border-color: var(--color-text);
+  gap: var(--space-3);
 }

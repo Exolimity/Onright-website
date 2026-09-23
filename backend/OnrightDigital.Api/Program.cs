@@ -1,5 +1,7 @@
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Diagnostics;
 using OnrightDigital.Api.Endpoints;
+using OnrightDigital.Api.Notifications;
 using OnrightDigital.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,9 +28,23 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Application services. Both are stateless or internally synchronised, so singletons are fine.
-builder.Services.AddSingleton<IServiceCatalog, StaticServiceCatalog>();
+// Spam protection: each visitor (by IP address) may send 5 enquiries per 10 minutes.
+// Behind a reverse proxy, enable forwarded headers first or everyone shares the proxy's IP.
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddPolicy(ContactEndpoints.RateLimitPolicy, context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(10),
+            }));
+});
+
 builder.Services.AddSingleton<IContactStore, JsonFileContactStore>();
+builder.Services.AddContactNotifications();
 
 var app = builder.Build();
 
@@ -61,12 +77,12 @@ else
 }
 
 app.UseCors(CorsPolicyName);
+app.UseRateLimiter();
 
 app.MapGet("/api/health", () => Results.Ok(new { status = "ok", timeUtc = DateTimeOffset.UtcNow }))
     .WithTags("Health")
     .WithSummary("Liveness check used by deployment tooling.");
 
-app.MapServiceEndpoints();
 app.MapContactEndpoints();
 
 app.Run();
